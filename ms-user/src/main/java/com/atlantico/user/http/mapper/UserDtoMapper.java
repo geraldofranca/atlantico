@@ -14,6 +14,10 @@ public class UserDtoMapper extends EntityToDtoMapper<User, UserDTO> {
         dto.setName(tab.getName());
         dto.setEmail(tab.getEmail());
         dto.setPassword(tab.getPassword());
+        dto.setLogin(tab.getLogin());
+        dto.setCreatedDate(tab.getCreatedDate());
+        dto.setUpdatedDate(tab.getUpdatedDate());
+        dto.setAdmin(tab.isAdmin());
         return dto;
     }
 
@@ -24,6 +28,10 @@ public class UserDtoMapper extends EntityToDtoMapper<User, UserDTO> {
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
+        user.setLogin(dto.getLogin());
+        user.setCreatedDate(dto.getCreatedDate());
+        user.setUpdatedDate(dto.getUpdatedDate());
+        user.setAdmin(dto.isAdmin());
         return user;
     }
 }

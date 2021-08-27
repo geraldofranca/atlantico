@@ -8,10 +8,12 @@ import com.atlantico.user.http.dto.UserDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.Cacheable;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -28,6 +30,7 @@ public class UserController {
     private EntityToDtoMapper<User, UserDTO> mapper;
 
     @PostMapping
+    @CacheEvict(value = "listAllUsers", allEntries = true)
     @ApiOperation(value = "create")
     public ResponseEntity<Response<UserDTO>> create(@Valid @RequestBody UserDTO dto, BindingResult result) {
         Response<UserDTO> response = new Response<UserDTO>();
@@ -43,6 +46,7 @@ public class UserController {
     }
 
     @GetMapping
+    @Cacheable(value = "listAllUsers")
     @ApiOperation(value = "list")
     public ResponseEntity<Response<List<UserDTO>>> list() {
         Response<List<UserDTO>> response = new Response<List<UserDTO>>();
