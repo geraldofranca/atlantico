@@ -3,6 +3,7 @@ package com.atlantico.user.http.controller;
 import com.atlantico.user.commons.response.Response;
 import com.atlantico.user.commons.util.EntityToDtoMapper;
 import com.atlantico.user.gateway.database.entity.User;
+import com.atlantico.user.gateway.service.MessageService;
 import com.atlantico.user.gateway.service.UserService;
 import com.atlantico.user.http.dto.UserDTO;
 import io.swagger.annotations.Api;
@@ -20,17 +21,19 @@ import java.util.List;
 
 @Api(tags = "Users")
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService service;
 
     @Autowired
+    private MessageService messageService;
+
+    @Autowired
     private EntityToDtoMapper<User, UserDTO> mapper;
 
     @PostMapping
-    @CacheEvict(value = "listAllUsers", allEntries = true)
     @ApiOperation(value = "create")
     public ResponseEntity<Response<UserDTO>> create(@Valid @RequestBody UserDTO dto, BindingResult result) {
         Response<UserDTO> response = new Response<UserDTO>();
@@ -46,12 +49,14 @@ public class UserController {
     }
 
     @GetMapping
-    @Cacheable(value = "listAllUsers")
     @ApiOperation(value = "list")
     public ResponseEntity<Response<List<UserDTO>>> list() {
         Response<List<UserDTO>> response = new Response<List<UserDTO>>();
         List<User> list = service.list();
         response.setData(mapper.map(list));
+
+        this.messageService.sendMessage("USER", list);
+
         return ResponseEntity.ok().body(response);
     }
 }

@@ -7,5 +7,5 @@ spring:
       server:
         git:
           uri: https://github.com/geraldofranca/ms-atl-repositorio
-          search-paths: user
+          search-paths: user, auth
           default-label: main

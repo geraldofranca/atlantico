@@ -35,10 +35,11 @@ public class User extends AbstractEntity implements Serializable {
     @Column(nullable = false)
     private boolean admin = false;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "created_date")
     @CreationTimestamp
     private Timestamp createdDate;
 
+    @Column(name = "updated_date")
     @UpdateTimestamp
     private Timestamp updatedDate;
 }
